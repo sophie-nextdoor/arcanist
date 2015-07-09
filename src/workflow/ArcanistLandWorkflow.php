@@ -997,7 +997,7 @@ EOTEXT
     // These commands can fail legitimately (e.g. commit hooks)
     try {
       if ($this->isGit) {
-        $repository_api->execxLocal('commit -F %s', $this->messageFile);
+        $repository_api->execxLocal('commit --no-verify -F %s', $this->messageFile);
         if (phutil_is_windows()) {
           // Occasionally on large repositories on Windows, Git can exit with
           // an unclean working copy here. This prevents reverts from being
