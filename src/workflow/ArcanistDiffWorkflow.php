@@ -329,6 +329,7 @@ EOTEXT
         'help' => pht('Suppress warning about uncommitted changes.'),
         'supports' => array(
           'hg',
+          'git',
         ),
       ),
       'verbatim' => array(
