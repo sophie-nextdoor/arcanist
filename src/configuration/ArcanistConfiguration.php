@@ -68,8 +68,7 @@ class ArcanistConfiguration extends Phobject {
   }
 
   public function didRunWorkflow($command, ArcanistWorkflow $workflow, $err) {
-
-    // This is a hook.
+    $this->customDidRunWorkflow($command, $workflow, $err);
   }
 
   public function didAbortWorkflow($command, $workflow, Exception $ex) {
@@ -269,4 +268,21 @@ class ArcanistConfiguration extends Phobject {
     return array_keys($distances);
   }
 
+  private function customDidRunWorkflow($command, ArcanistWorkflow $workflow, $err) {
+    $workflowName = $workflow->getWorkflowName();
+
+    if (!$err) {
+      $hook = null;
+
+      switch($workflowName) {
+        case "diff": $hook = new PostDiffHook(); break;
+        case "land": $hook = new PostLandHook(); break;
+        default: $hook = null;
+      }
+
+      if ($hook) {
+        $hook->doHook($workflow);
+      }
+    }
+  }
 }
